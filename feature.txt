@@ -1,0 +1,13 @@
+1. about => short_about, about
+2. social => fb, twtr, link, phone, email, location
+3. experience => title, company name, starting date, ending date, desc, still_working
+4. education => title, academy name, starting date, ending date, desc, still_working
+5. referrence => avatar, name, company name, position, phone, email
+6. serviece => title, short_desc, desc, icon
+7. portfolio => title, live link, thumbnail,
+8. skills => name, icon
+9. pricing plan => name, price
+10. faq => ques, ans
+11. testimonial => name, avatar, review, location, rating
+12. blog => thumbnail, title
+13. contact => name, email, subject, msg

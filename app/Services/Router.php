@@ -40,6 +40,11 @@ class Router
             return;
         }
 
+        if ($this->isRequestRoute($safePath)) {
+            $this->handleRequestRoute($safePath);
+            return;
+        }
+
         $this->handleFrontendRoute($safePath);
     }
 
@@ -103,6 +108,46 @@ class Router
     private function isAdminRoute(string $path): bool
     {
         return str_starts_with($path, 'admin');
+    }
+
+    /**
+     * Check if the path belongs to the request handler.
+     * 
+     * @param string $path The sanitized path
+     * @return bool True if it's a request route
+     */
+    private function isRequestRoute(string $path): bool
+    {
+        return str_starts_with($path, 'request');
+    }
+
+    /**
+     * Handle routing for request pages.
+     * 
+     * @param string $path The sanitized path
+     */
+    private function handleRequestRoute(string $path): void
+    {
+        // Enforce POST method
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->bootstrap->renderError(405, "405 Method Not Allowed");
+            return;
+        }
+
+        if ($path === 'request') {
+             $this->bootstrap->renderError(404, "404 Not Found");
+             return;
+        }
+
+        $requestPath = substr($path, strlen('request/'));
+        $file = $this->root . "/request/{$requestPath}.php";
+        
+        if (is_file($file)) {
+            include $file;
+            exit;
+        }
+
+        $this->bootstrap->renderError(404, "404 Not Found");
     }
 
     /**

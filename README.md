@@ -90,6 +90,33 @@ The `index.php` file handles routing dynamically:
     -   `/admin` -> `backend/admin/index.php`
     -   `/admin/users` -> `backend/admin/pages/users/index.php`
 
+### Request Handling
+
+The application includes a dedicated `request/` directory for handling POST requests (e.g., form submissions).
+
+-   **URL Pattern**: `/request/{filename}` maps to `request/{filename}.php`.
+-   **Clean URLs**: Do **not** include the `.php` extension in the URL.
+-   **Method**: Only `POST` requests are accepted. `GET` requests will return a 405 error.
+
+**Example**:
+
+1.  Create `request/contact.php`:
+    ```php
+    <?php
+    // Handle form data
+    $name = $_POST['name'] ?? '';
+    // ... logic ...
+    header('Location: /contact?success=1');
+    ```
+
+2.  Create a form in `frontend/pages/contact/index.php`:
+    ```html
+    <form action="/request/contact" method="POST">
+        <input type="text" name="name">
+        <button type="submit">Send</button>
+    </form>
+    ```
+
 ### Database Access
 
 Use the `App\Services\DbQuery` class for easy database interactions. It automatically connects using your `.env` credentials.

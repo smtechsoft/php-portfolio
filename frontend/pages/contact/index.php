@@ -126,31 +126,38 @@
             </div>
             <div class="row">
                 <div class="col-md-6 col-lg-7">
-                    <form>
+                    <form method="post" action="/request/frontend/contact">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Name">
+                                    <input type="text" class="form-control" placeholder="Name" name="name" required>
+                                    <?php if (isset($_GET['name_error'])): ?>
+                                    <p class="text-danger"><?= $_GET['name_error']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="Email">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Subject">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input type="file" class="form-control">
+                                    <input type="email" class="form-control" placeholder="Email" name="email">
+                                    <?php if (isset($_GET['email_error'])): ?>
+                                    <p class="text-danger"><?= $_GET['email_error']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <textarea class="form-control" placeholder="Message"></textarea>
+                                    <input type="text" class="form-control" placeholder="Subject">
+                                    <?php if (isset($_GET['subject_error'])): ?>
+                                    <p class="text-danger"><?= $_GET['subject_error']; ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <textarea class="form-control" placeholder="Message" name="message"></textarea>
+                                    <?php if (isset($_GET['message_error'])): ?>
+                                    <p class="text-danger"><?= $_GET['message_error']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="col-lg-12">

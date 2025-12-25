@@ -127,12 +127,13 @@
             <div class="row">
                 <div class="col-md-6 col-lg-7">
                     <form method="post" action="/request/frontend/contact">
+                        <input type="text" hidden name="form_page" value="contaact_page">
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Name" name="name" required>
                                     <?php if (isset($_GET['name_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['name_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['name_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -140,7 +141,7 @@
                                 <div class="form-group">
                                     <input type="email" class="form-control" placeholder="Email" name="email">
                                     <?php if (isset($_GET['email_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['email_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['email_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -148,7 +149,7 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Subject">
                                     <?php if (isset($_GET['subject_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['subject_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['subject_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -156,7 +157,7 @@
                                 <div class="form-group">
                                     <textarea class="form-control" placeholder="Message" name="message"></textarea>
                                     <?php if (isset($_GET['message_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['message_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['message_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -166,6 +167,9 @@
                                         <i class="fas fa-paper-plane"></i>
                                         <span>send message</span>
                                     </button>
+                                    <?php if (isset($_GET['success'])): ?>
+                                        <p class="text-success"><?= $_GET['success']; ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

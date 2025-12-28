@@ -1,3 +1,14 @@
+<?php
+
+use App\Features\Frontend\Blog;
+
+$blog = new Blog();
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$allBlogs = $blog->getAllBlogs(2, $page);
+$blogs = $allBlogs['rows'];
+$totalPage = $allBlogs['totalPages'];
+$currentPage = $allBlogs['currentPage'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,6 +95,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-8">
                     <div class="row">
+                        <?php if (!empty($blogs)):  ?>
+                        <?php foreach ($blogs as $blog): ?>
                         <div class="col-md-6 col-lg-6">
                             <div class="blog-card">
                                 <div class="blog-img">
@@ -104,12 +117,11 @@
                                         </li>
                                     </ul>
                                     <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
+                                        <h4><a href="/blogs/<?= $blog->slug ?>"><?= $blog->title ?></a></h4>
                                     </div>
                                     <ul class="blog-link">
                                         <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
+                                            <a class="btn btn-inline" href="/blogs/<?= $blog->slug ?>">read more</a>
                                         </li>
                                         <li>
                                             <i class="fas fa-comments"></i>
@@ -119,251 +131,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/02.jpg" alt="blog-2">
-                                    <div class="blog-oly">
-                                        <p>javascript</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/03.jpg" alt="blog-3">
-                                    <div class="blog-oly">
-                                        <p>html, css</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/04.jpg" alt="blog-4">
-                                    <div class="blog-oly">
-                                        <p>html, css</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/05.jpg" alt="blog-5">
-                                    <div class="blog-oly">
-                                        <p>html, css</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/06.jpg" alt="blog-6">
-                                    <div class="blog-oly">
-                                        <p>html, css</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/07.jpg" alt="blog-7">
-                                    <div class="blog-oly">
-                                        <p>html, css</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-6">
-                            <div class="blog-card">
-                                <div class="blog-img">
-                                    <img src="frontend/assets/images/blog/08.jpg" alt="blog-8">
-                                    <div class="blog-oly">
-                                        <p>html, css</p>
-                                    </div>
-                                </div>
-                                <div class="blog-content">
-                                    <ul class="blog-meta">
-                                        <li>
-                                            <i class="fas fa-clock"></i>
-                                            <p>02 feb 2020</p>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-share-alt"></i>
-                                            <p>5 share</p>
-                                        </li>
-                                    </ul>
-                                    <div class="blog-text">
-                                        <h4><a href="#">Business contents insurance iure ipsam ratione is a type of
-                                                business...</a></h4>
-                                    </div>
-                                    <ul class="blog-link">
-                                        <li>
-                                            <a class="btn btn-inline" href="#">read more</a>
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-comments"></i>
-                                            <p>13 comments</p>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -373,12 +142,15 @@
                                         <i class="fas fa-long-arrow-alt-left"></i>
                                     </a>
                                 </li>
-                                <li class="page-item"><a class="page-link active" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">...</li>
-                                <li class="page-item"><a class="page-link" href="#">67</a></li>
+                                <?php for ($i = 1; $i <= $totalPage; $i++): ?>
                                 <li class="page-item">
+                                    <a class="page-link <?php if ($i == $currentPage) echo 'active'; ?>"
+                                        href="/blogs?page=<?= $i ?>">
+                                        <?= $i ?>
+                                    </a>
+                                </li>
+                                <?php endfor; ?>
+                                <li class=" page-item">
                                     <a class="page-link" href="#">
                                         <i class="fas fa-long-arrow-alt-right"></i>
                                     </a>
@@ -405,7 +177,8 @@
                                     </div>
                                     <div class="suggest-content">
                                         <div class="suggest-title">
-                                            <h6><a href="#">Business contents insurance is a type of business.</a></h6>
+                                            <h6><a href="#">Business contents insurance is a type of business.</a>
+                                            </h6>
                                         </div>
                                         <div class="suggest-date">
                                             <i class="fas fa-clock"></i>
@@ -420,7 +193,8 @@
                                     </div>
                                     <div class="suggest-content">
                                         <div class="suggest-title">
-                                            <h6><a href="#">Business contents insurance is a type of business.</a></h6>
+                                            <h6><a href="#">Business contents insurance is a type of business.</a>
+                                            </h6>
                                         </div>
                                         <div class="suggest-date">
                                             <i class="fas fa-clock"></i>
@@ -435,7 +209,8 @@
                                     </div>
                                     <div class="suggest-content">
                                         <div class="suggest-title">
-                                            <h6><a href="#">Business contents insurance is a type of business.</a></h6>
+                                            <h6><a href="#">Business contents insurance is a type of business.</a>
+                                            </h6>
                                         </div>
                                         <div class="suggest-date">
                                             <i class="fas fa-clock"></i>

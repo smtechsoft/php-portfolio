@@ -138,6 +138,32 @@ class DbQuery extends Database
     }
 
     /**
+     * Find a single row by Slug.
+     *
+     * @param string $tableName The table name.
+     * @param string $slug The row slug.
+     * @return array Returns:
+     *               - rowCount (int)
+     *               - query (\PDOStatement)
+     *               - row (array|false)
+     */
+    public function findBySlug($tableName, $slug)
+    {
+        $this->query = "SELECT * FROM `$tableName` WHERE `slug` = ?";
+        $stmt = $this->returnConnect()->prepare($this->query);
+        $stmt->execute([$slug]);
+
+        $this->runQuery = $stmt;
+        $this->rowsCount = $stmt->rowCount();
+
+        $this->result['rowCount'] = $this->rowsCount;
+        $this->result['query'] = $this->runQuery;
+        $this->result['row'] = $stmt->fetch(\PDO::FETCH_OBJ);
+
+        return $this->result;
+    }
+
+    /**
      * Fetch the latest row from a table.
      *
      * @param string $tableName The table name.

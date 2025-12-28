@@ -155,6 +155,11 @@ class Router
      * 
      * @param string $path The sanitized path
      */
+    /**
+     * Handle routing for admin pages.
+     * 
+     * @param string $path The sanitized path
+     */
     private function handleAdminRoute(string $path): void
     {
         if ($path === 'admin') {
@@ -164,8 +169,22 @@ class Router
         }
 
         $adminPath = substr($path, strlen('admin/'));
+        
+        // Try exact match first
         $file = $this->root . "/backend/admin/pages/{$adminPath}/index.php";
-        $this->includeOr404($file);
+        if (is_file($file)) {
+            $this->includeOr404($file);
+            return;
+        }
+
+        // Try dynamic match
+        $resolvedFile = $this->resolveDynamicRoute($this->root . '/backend/admin/pages', $adminPath);
+        if ($resolvedFile) {
+            include $resolvedFile;
+            exit;
+        }
+
+        $this->bootstrap->renderError(404, "404 Not Found");
     }
 
     /**
@@ -181,19 +200,90 @@ class Router
             return;
         }
 
+        // 1. Check for exact directory match in pages
         if (is_file($this->root . "/frontend/pages/{$path}/index.php")) {
             $file = $this->root . "/frontend/pages/{$path}/index.php";
             $this->includeOr404($file);
             return;
         }
 
+        // 2. Check for exact file match in root
         if (is_file($this->root . "/{$path}.php")) {
             $file = $this->root . "/{$path}.php";
             $this->includeOr404($file);
             return;
         }
 
+        // 3. Try dynamic route in pages
+        $resolvedFile = $this->resolveDynamicRoute($this->root . '/frontend/pages', $path);
+        if ($resolvedFile) {
+            include $resolvedFile;
+            exit;
+        }
+
         $this->bootstrap->renderError(404, "404 Not Found");
+    }
+
+    /**
+     * Attempt to resolve a dynamic route.
+     * 
+     * @param string $baseDir The base directory to search in (e.g., frontend/pages)
+     * @param string $path The request path (e.g., blog/my-post)
+     * @return string|null The resolved file path or null if not found
+     */
+    private function resolveDynamicRoute(string $baseDir, string $path): ?string
+    {
+        $segments = explode('/', $path);
+        $currentDir = $baseDir;
+        $params = [];
+
+        foreach ($segments as $segment) {
+            $nextDir = $currentDir . '/' . $segment;
+
+            // 1. Check for exact match
+            if (is_dir($nextDir)) {
+                $currentDir = $nextDir;
+                continue;
+            }
+
+            // 2. Check for dynamic match ([param])
+            $foundDynamic = false;
+            
+            // Use scandir instead of glob to avoid special character issues with brackets
+            $items = scandir($currentDir);
+            
+            foreach ($items as $item) {
+                if ($item === '.' || $item === '..') {
+                    continue;
+                }
+                
+                $subDir = $currentDir . DIRECTORY_SEPARATOR . $item;
+                if (is_dir($subDir)) {
+                    // Check if directory name starts with [ and ends with ]
+                    if (str_starts_with($item, '[') && str_ends_with($item, ']')) {
+                        $paramName = substr($item, 1, -1);
+                        $params[$paramName] = $segment;
+                        $currentDir = $subDir;
+                        $foundDynamic = true;
+                        break; // Prioritize first dynamic match found
+                    }
+                }
+            }
+
+            if (!$foundDynamic) {
+                return null;
+            }
+        }
+
+        // Check if index.php exists in the final directory
+        $file = $currentDir . '/index.php';
+        if (is_file($file)) {
+            // Inject params into $_GET
+            $_GET = array_merge($_GET, $params);
+            return $file;
+        }
+
+        return null;
     }
 
     /**

@@ -132,6 +132,9 @@ $users = $db->all('users');
 // Find by ID
 $user = $db->find('users', 1);
 
+// Find by Slug
+$post = $db->findBySlug('posts', 'my-first-post');
+
 // Insert
 $db->insert('users', [
     'name' => 'John Doe',
@@ -148,8 +151,25 @@ $db->delete('users', 1);
 
 // Fetch Latest Record
 $latestUser = $db->latest('users');
+// Fetch Latest Record
+$latestUser = $db->latest('users');
 // or with custom column
 $latestUser = $db->latest('users', 'created_at');
+```
+
+### Slug Generation
+
+Use the `App\Services\SlugService` to generate unique URL-friendly slugs.
+
+```php
+use App\Services\SlugService;
+
+$slugService = new SlugService();
+
+// Create a slug from a string (e.g., post title)
+// It automatically checks the 'posts' table for duplicates and appends a number if needed.
+$slug = $slugService->generate('posts', 'My New Post Title');
+// Result: 'my-new-post-title' (or 'my-new-post-title-1' if it exists)
 ```
 
 ### Pagination
@@ -218,7 +238,25 @@ $user = $result['row'];
 <?php endif; ?>
 ```
 
-#### 3. Fetch Latest Row (`latest`)
+#### 3. Find Single Row by Slug (`findBySlug`)
+
+```php
+<?php
+$db = new App\Services\DbQuery();
+$result = $db->findBySlug('posts', 'hello-world'); // Find post with slug 'hello-world'
+$post = $result['row'];
+?>
+
+<h3>Post Details</h3>
+<?php if ($post): ?>
+    <h1><?= htmlspecialchars($post->title) ?></h1>
+    <p><?= htmlspecialchars($post->content) ?></p>
+<?php else: ?>
+    <p>Post not found.</p>
+<?php endif; ?>
+```
+
+#### 4. Fetch Latest Row (`latest`)
 
 ```php
 <?php
@@ -236,7 +274,7 @@ $latestUser = $result['row'];
 <?php endif; ?>
 ```
 
-#### 4. Insert Data (`insert`)
+#### 5. Insert Data (`insert`)
 
 ```php
 <?php
@@ -262,7 +300,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 ```
 
-#### 5. Update Data (`update`)
+#### 6. Update Data (`update`)
 
 ```php
 <?php
@@ -293,7 +331,7 @@ $user = $db->find('users', $id)['row'];
 <?php endif; ?>
 ```
 
-#### 6. Delete Data (`delete`)
+#### 7. Delete Data (`delete`)
 
 ```php
 <?php

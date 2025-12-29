@@ -5,6 +5,7 @@ namespace App\Services;
 use Exception;
 use App\Database\Database;
 use mysqli;
+use App\Services\SlugService;
 
 /**
  * Class Installer
@@ -161,8 +162,11 @@ class Installer
             $adminPass = password_hash('12345678', PASSWORD_BCRYPT);
             $adminAbout = 'Super Admin';
             
-            $insert = $pdo->prepare("INSERT INTO users (name, email, password, about) VALUES (?, ?, ?, ?)");
-            $insert->execute([$adminName, $adminEmail, $adminPass, $adminAbout]);
+            $slugService = new SlugService();
+            $slug = $slugService->generate('users', $adminName);
+
+            $insert = $pdo->prepare("INSERT INTO users (name, email, password, about, slug) VALUES (?, ?, ?, ?, ?)");
+            $insert->execute([$adminName, $adminEmail, $adminPass, $adminAbout, $slug]);
         }
     }
 

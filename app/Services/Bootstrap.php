@@ -34,6 +34,9 @@ class Bootstrap
      */
     public function boot(): void
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         $this->ensureEnvExists();
         $this->loadEnv();
         $this->configureErrorHandling();
@@ -79,6 +82,10 @@ class Bootstrap
         $debug = ($this->env['APP_DEBUG'] ?? 'false') === 'true';
         $env   = $this->env['APP_ENV'] ?? 'production';
 
+        if (php_sapi_name() === 'cli') {
+            return;
+        }
+
         if ($debug && $env === 'local') {
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
@@ -103,7 +110,7 @@ class Bootstrap
      */
     private function runMigrations(): void
     {
-        $host = $this->env['DB_HOST'] ?? 'localhost';
+        $host = $this->env['DB_HOST'] ?? '127.0.0.1';
         $db   = $this->env['DB_DATABASE'] ?? null;
         $user = $this->env['DB_USERNAME'] ?? null;
         $pass = $this->env['DB_PASSWORD'] ?? null;
@@ -136,8 +143,8 @@ class Bootstrap
             try {
                 $pdo->exec($query);
             } catch (\PDOException $e) {
-                // Ignore "Multiple primary key defined" (1068) and "Duplicate key name" (1061)
-                if (in_array($e->errorInfo[1], [1068, 1061])) {
+                // Ignore "Multiple primary key defined" (1068), "Duplicate key name" (1061), "Duplicate column name" (1060)
+                if (in_array($e->errorInfo[1], [1068, 1061, 1060])) {
                     continue;
                 }
                 throw $e;

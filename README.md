@@ -90,6 +90,40 @@ The `index.php` file handles routing dynamically:
     -   `/admin` -> `backend/admin/index.php`
     -   `/admin/users` -> `backend/admin/pages/users/index.php`
 
+### Dynamic Routing
+
+You can create dynamic routes by using square brackets `[]` in directory names. The value inside the brackets will be available as a `$_GET` parameter.
+
+**Example 1: Blog Post by Slug**
+- **URL**: `/blog/my-first-post`
+- **File**: `frontend/pages/blog/[slug]/index.php`
+- **Access**: `$_GET['slug']` will contain `'my-first-post'`.
+
+**Example 2: User Profile by ID**
+- **URL**: `/user/123`
+- **File**: `frontend/pages/user/[id]/index.php`
+- **Access**: `$_GET['id']` will contain `'123'`.
+
+**Example 3: Nested Dynamic Routes**
+- **URL**: `/blog/123/my-post`
+- **File**: `frontend/pages/blog/[id]/[slug]/index.php`
+- **Access**:
+    - `$_GET['id']` -> `'123'`
+    - `$_GET['slug']` -> `'my-post'`
+
+```php
+<?php
+// In frontend/pages/blog/[slug]/index.php
+$slug = $_GET['slug'] ?? null;
+
+if ($slug) {
+    echo "Showing post: " . htmlspecialchars($slug);
+} else {
+    echo "Slug not found";
+}
+?>
+```
+
 ### Request Handling
 
 The application includes a dedicated `request/` directory for handling POST requests (e.g., form submissions).
@@ -155,6 +189,55 @@ $latestUser = $db->latest('users');
 $latestUser = $db->latest('users');
 // or with custom column
 $latestUser = $db->latest('users', 'created_at');
+```
+
+### Authentication
+
+The `App\Services\Auth` class provides a simple way to handle user authentication, similar to Laravel's Auth facade.
+
+#### 1. Login (`attempt`)
+
+```php
+use App\Services\Auth;
+
+$credentials = [
+    'email' => 'user@example.com',
+    'password' => 'secret'
+];
+
+// Basic Login
+if (Auth::attempt($credentials)) {
+    // Success
+}
+
+// Login with "Remember Me" (Persistent Cookie)
+if (Auth::attempt($credentials, true)) {
+    // User stays logged in for 30 days
+}
+```
+
+#### 2. Check Authentication (`check`, `user`, `id`)
+
+```php
+use App\Services\Auth;
+
+if (Auth::check()) {
+    // User is logged in
+    $user = Auth::user();
+    echo "Hello, " . $user->name;
+    
+    $userId = Auth::id();
+} else {
+    // User is guest
+}
+```
+
+#### 3. Logout (`logout`)
+
+```php
+use App\Services\Auth;
+
+Auth::logout(); // Clears session and remember token
 ```
 
 ### Slug Generation

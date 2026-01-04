@@ -1,3 +1,9 @@
+<?php
+if (!isset($_COOKIE['test_cookie'])) {
+    header("Location: /admin/auth/login");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 

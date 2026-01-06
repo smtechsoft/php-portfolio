@@ -1,9 +1,3 @@
-<?php
-if (!isset($_COOKIE['test_cookie'])) {
-    header("Location: /admin/auth/login");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,6 +8,9 @@ if (!isset($_COOKIE['test_cookie'])) {
 </head>
 
 <body>
+    <?php
+    include('backend/admin/partials/header.php');
+    ?>
     <h1>Users</h1>
 </body>
 

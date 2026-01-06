@@ -1,20 +1,17 @@
-<?php
-echo $_SESSION['user_id'] ?? 'No user logged in';
-?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Blogs</title>
 </head>
 
 <body>
     <?php
     include('backend/admin/partials/header.php');
     ?>
-    <h1>admin</h1>
+    this is blog page
 </body>
 
 </html>

@@ -163,6 +163,33 @@ class DbQuery extends Database
         return $this->result;
     }
 
+
+    /**
+     * Find a single row by Slug.
+     *
+     * @param string $tableName The table name.
+     * @param string $slug The row slug.
+     * @return array Returns:
+     *               - rowCount (int)
+     *               - query (\PDOStatement)
+     *               - row (array|false)
+     */
+    public function where($tableName, $column, $value)
+    {
+        $this->query = "SELECT * FROM `$tableName` WHERE `$column` = ?";
+        $stmt = $this->returnConnect()->prepare($this->query);
+        $stmt->execute([$value]);
+
+        $this->runQuery = $stmt;
+        $this->rowsCount = $stmt->rowCount();
+
+        $this->result['rowCount'] = $this->rowsCount;
+        $this->result['query'] = $this->runQuery;
+        $this->result['row'] = $stmt->fetch(\PDO::FETCH_OBJ);
+
+        return $this->result;
+    }
+
     /**
      * Fetch the latest row from a table.
      *
@@ -268,5 +295,4 @@ class DbQuery extends Database
 
         return $success ? "data updated" : "update failed";
     }
-    
 }

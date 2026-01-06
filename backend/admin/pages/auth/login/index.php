@@ -1,10 +1,9 @@
 <?php
-if (isset($_COOKIE['test_cookie'])) {
+if (isset($_SESSION['user_id'])) {
     header("Location: /admin");
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +19,7 @@ if (isset($_COOKIE['test_cookie'])) {
         <input type="text" id="email" name="email">
         <br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password">
+        <input type="text" id="password" name="password">
         <br>
         <button type="submit">Login</button>
     </form>

@@ -50,7 +50,7 @@ class Auth
 
         if ($remember) {
             $token = bin2hex(random_bytes(32));
-            
+
             // Save token to DB
             $db = new DbQuery();
             $db->query = "UPDATE users SET remember_token = ? WHERE id = ?";

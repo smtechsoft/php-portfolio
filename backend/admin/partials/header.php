@@ -6,10 +6,10 @@ if (!isset($_SESSION['user_id'])) {
 ?>
 <ul>
     <li>
-        <a href="">Dashboard</a>
+        <a href="/admin">Dashboard</a>
     </li>
     <li>
-        <a href="">Blogs</a>
+        <a href="/admin/blogs">Blogs</a>
     </li>
     <li>
         <form action="/request/backend/auth/logout" method="post">

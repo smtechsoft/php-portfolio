@@ -26,6 +26,7 @@ $currentPage = $allBlogs['currentPage'];
     <?php
     include('backend/admin/partials/header.php');
     ?>
+    <a href="/admin/blogs/create">create new blog</a>
     <table class="table">
         <thead>
             <tr>
@@ -37,42 +38,44 @@ $currentPage = $allBlogs['currentPage'];
         </thead>
         <tbody>
             <?php if (!empty($blogs)): ?>
-            <?php foreach ($blogs as $blog): ?>
-            <tr>
-                <th scope="row">1</th>
-                <td>
-                    <?= $blog->thumbnail ?>
-                </td>
-                <td><?= $blog->title ?></td>
-                <td>
-                    <a href="/admin/blogs/edit/<?= $blog->slug ?>">edit</a>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        data-blog-id="<?= $blog->id ?>" id="deleteBtn">
-                        delete
-                    </button>
-                </td>
-            </tr>
-            <?php endforeach ?>
+                <?php foreach ($blogs as $blog): ?>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>
+                            <img src="<?= $blog->thumbnail ?>" alt="">
+                        </td>
+                        <td><?= $blog->title ?></td>
+                        <td>
+                            <a href="/admin/blogs/edit/<?= $blog->slug ?>">edit</a>
+                            <button type="button" class="btn btn-primary deleteBtn" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal" data-blog-id="<?= $blog->id ?>">
+                                delete
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
             <?php endif ?>
         </tbody>
     </table>
+
+    <!-- Pgination -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             <li class="page-item">
-                <a class="page-link" href="#">
-                    <i class="fas fa-long-arrow-alt-left"></i>
-                </a>
+                <a class="page-link" href="<?php echo '/admin/blogs?page=' . ($currentPage - 1) ?>">
+                    < </a>
             </li>
             <?php for ($i = 1; $i <= $totalPage; $i++): ?>
-            <li class="page-item">
-                <a class="page-link <?php if ($i == $currentPage) echo 'active'; ?>" href="/admin/blogs?page=<?= $i ?>">
-                    <?= $i ?>
-                </a>
-            </li>
+                <li class="page-item">
+                    <a class="page-link <?php if ($i == $currentPage) echo 'active'; ?>"
+                        href="<?php if ($i !== $currentPage) echo '/admin/blogs?page=' . $i ?>">
+                        <?= $i ?>
+                    </a>
+                </li>
             <?php endfor; ?>
             <li class=" page-item">
-                <a class="page-link" href="#">
-                    <i class="fas fa-long-arrow-alt-right"></i>
+                <a class="page-link" href="<?php echo '/admin/blogs?page=' . ($currentPage + 1) ?>">
+                    >
                 </a>
             </li>
         </ul>
@@ -94,8 +97,9 @@ $currentPage = $allBlogs['currentPage'];
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <form action="/request/backend/blog" method="post" id="blogDeleteConfirm">
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                    <form action="/request/backend/blog/delete" method="post" id="blogDeleteConfirm">
+                        <input type="hidden" name="id" id="deleteBlogId">
+                        <button type="submit" class="btn btn-primary">Confirm Delete</button>
                     </form>
                 </div>
             </div>
@@ -118,17 +122,15 @@ $currentPage = $allBlogs['currentPage'];
 
 
     <script>
-    let blogid = null;
-    let deleteBtn = $('#deleteBtn')
-    let deleteform = $('#blogDeleteConfirm')
-    deleteBtn.on('click', function() {
-        blogid = $(this).data('blog-id')
-        alert(blogid)
-    })
-    deleteform.on('submit', function(e) {
-        e.preventDefault();
-        alert('deleting blog id: ' + blogid)
-    })
+        let blogid = null;
+        let deleteBtn = $('.deleteBtn')
+        let deleteform = $('#blogDeleteConfirm')
+        let deleteBlogIdInput = $('#deleteBlogId')
+
+        deleteBtn.on('click', function() {
+            blogid = $(this).data('blog-id')
+            deleteBlogIdInput.val(blogid)
+        })
     </script>
 </body>
 

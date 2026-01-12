@@ -4,15 +4,18 @@ use App\Features\Frontend\Social;
 use App\Features\Frontend\About;
 use App\Features\Frontend\Experience;
 use App\Features\Frontend\Education;
+use App\Features\Frontend\Pricing;
 
 $social = new Social();
 $about = new About();
 $experience = new Experience();
 $education = new Education();
+$pricing = new Pricing();
 $socialResults = $social->getAllSocialLinks();
 $aboutResult = $about->info();
 $experienceResults = $experience->getAllExperiences();
 $educationResults = $education->getAllEducations();
+$pricingResults = $pricing->getAllPricingPlans();
 
 ?>
 
@@ -88,20 +91,20 @@ $educationResults = $education->getAllEducations();
                         <div class="banner-content">
                             <ul class="banner-icon">
                                 <?php if (!empty($socialResults)):  ?>
-                                <?php foreach ($socialResults as $social): ?>
-                                <li><a class="icon icon-inline" href="<?= $social->social_link ?>"><i
-                                            class="<?= $social->icon ?> "></i></a>
-                                </li>
-                                <?php endforeach; ?>
+                                    <?php foreach ($socialResults as $social): ?>
+                                        <li><a class="icon icon-inline" href="<?= $social->social_link ?>"><i
+                                                    class="<?= $social->icon ?> "></i></a>
+                                        </li>
+                                    <?php endforeach; ?>
                                 <?php endif; ?>
                             </ul>
                             <div class="banner-text">
                                 <span>Welcome dear!</span>
                                 <?php if ($aboutResult): ?>
-                                <h2><?= $aboutResult->short_about ?></h2>
+                                    <h2><?= $aboutResult->short_about ?></h2>
                                 <?php endif; ?>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->about ?></p>
+                                    <p><?= $aboutResult->about ?></p>
                                 <?php endif; ?>
                             </div>
                             <div class="banner-btn duel-btn">
@@ -184,10 +187,10 @@ $educationResults = $education->getAllEducations();
                 <div class="col-lg-7">
                     <div class="about-summery">
                         <?php if ($aboutResult): ?>
-                        <h3><?= $aboutResult->short_about ?></h3>
+                            <h3><?= $aboutResult->short_about ?></h3>
                         <?php endif; ?>
                         <?php if ($aboutResult): ?>
-                        <p><?= $aboutResult->about ?></p>
+                            <p><?= $aboutResult->about ?></p>
                         <?php endif; ?>
                     </div>
                     <div class="about-list">
@@ -195,19 +198,19 @@ $educationResults = $education->getAllEducations();
                             <li>
                                 <h6>Birthday:</h6>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->birthday ?></p>
+                                    <p><?= $aboutResult->birthday ?></p>
                                 <?php endif; ?>
                             </li>
                             <li>
                                 <h6>Lives in:</h6>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->location ?></p>
+                                    <p><?= $aboutResult->location ?></p>
                                 <?php endif; ?>
                             </li>
                             <li>
                                 <h6>Website:</h6>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->github ?></p>
+                                    <p><?= $aboutResult->github ?></p>
                                 <?php endif; ?>
                             </li>
                         </ul>
@@ -215,19 +218,19 @@ $educationResults = $education->getAllEducations();
                             <li>
                                 <h6>Phone:</h6>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->whatsapp ?></p>
+                                    <p><?= $aboutResult->whatsapp ?></p>
                                 <?php endif; ?>
                             </li>
                             <li>
                                 <h6>Skype:</h6>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->skype ?></p>
+                                    <p><?= $aboutResult->skype ?></p>
                                 <?php endif; ?>
                             </li>
                             <li>
                                 <h6>Linkedin:</h6>
                                 <?php if ($aboutResult): ?>
-                                <p><?= $aboutResult->linkedin ?></p>
+                                    <p><?= $aboutResult->linkedin ?></p>
                                 <?php endif; ?>
                             </li>
                         </ul>
@@ -263,25 +266,25 @@ $educationResults = $education->getAllEducations();
         <div class="container">
             <div class="row">
                 <?php if (!empty($experienceResults)): ?>
-                <?php foreach ($experienceResults as $experience): ?>
-                <div class="col-md-6 col-lg-6">
-                    <div class="resume-card">
-                        <div class="resume-content">
-                            <div class="resume-icon">
-                                <i class="fas fa-award"></i>
-                            </div>
-                            <div class="resume-meta">
-                                <h4><?= $experience->title ?></h4>
-                                <h5><?= $experience->company_name ?></h5>
-                                <h6><?= $experience->starting_date ?> - <?= $experience->ending_date ?>/h6>
+                    <?php foreach ($experienceResults as $experience): ?>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="resume-card">
+                                <div class="resume-content">
+                                    <div class="resume-icon">
+                                        <i class="fas fa-award"></i>
+                                    </div>
+                                    <div class="resume-meta">
+                                        <h4><?= $experience->title ?></h4>
+                                        <h5><?= $experience->company_name ?></h5>
+                                        <h6><?= $experience->starting_date ?> - <?= $experience->ending_date ?>/h6>
+                                    </div>
+                                </div>
+                                <div class="resume-text">
+                                    <p><?= $experience->description ?></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="resume-text">
-                            <p><?= $experience->description ?></p>
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach ?>
+                    <?php endforeach ?>
                 <?php endif ?>
             </div>
         </div>
@@ -298,25 +301,25 @@ $educationResults = $education->getAllEducations();
         <div class="container">
             <div class="row">
                 <?php if (!empty($educationResults)): ?>
-                <?php foreach ($educationResults as $education): ?>
-                <div class="col-md-6 col-lg-6">
-                    <div class="resume-card">
-                        <div class="resume-content">
-                            <div class="resume-icon">
-                                <i class="fas fa-graduation-cap"></i>
-                            </div>
-                            <div class="resume-meta">
-                                <h4><?= $education->title ?></h4>
-                                <h5><?= $education->academy_name ?></h5>
-                                <h6><?= $education->starting_date ?>-<?= $education->ending_date ?></h6>
+                    <?php foreach ($educationResults as $education): ?>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="resume-card">
+                                <div class="resume-content">
+                                    <div class="resume-icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div class="resume-meta">
+                                        <h4><?= $education->title ?></h4>
+                                        <h5><?= $education->academy_name ?></h5>
+                                        <h6><?= $education->starting_date ?>-<?= $education->ending_date ?></h6>
+                                    </div>
+                                </div>
+                                <div class="resume-text">
+                                    <p><?= $education->description ?></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="resume-text">
-                            <p><?= $education->description ?></p>
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach ?>
+                    <?php endforeach ?>
                 <?php endif ?>
             </div>
         </div>
@@ -803,49 +806,6 @@ $educationResults = $education->getAllEducations();
 
 
     <!--=====================================
-                    COUNTER PART START
-        =======================================-->
-    <section class="counter-part">
-        <div class="counter-bg">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 col-lg-4">
-                        <div class="counter-card count-1">
-                            <i class="flaticon-project-management"></i>
-                            <div class="counter-info">
-                                <h3><span class="counter-number">122</span>+</h3>
-                                <p>Project completed</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4">
-                        <div class="counter-card count-2">
-                            <i class="flaticon-handshake"></i>
-                            <div class="counter-info">
-                                <h3><span class="counter-number">108</span>+</h3>
-                                <p>Satisfied Clients</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4">
-                        <div class="counter-card count-3">
-                            <i class="flaticon-hand-gesture"></i>
-                            <div class="counter-info">
-                                <h3><span class="counter-number">98</span>%</h3>
-                                <p>Possitive Feedback</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!--=====================================
-                    COUNTER PART END
-        =======================================-->
-
-
-    <!--=====================================
                     PRICING PART START
         =======================================-->
     <section class="section pricing-part">
@@ -859,72 +819,37 @@ $educationResults = $education->getAllEducations();
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6 col-lg-4">
-                    <div class="pricing-card">
-                        <div class="pricing-money">
-                            <h3>basic</h3>
-                            <h4>$30.00</h4>
-                            <p>per project</p>
+                <?php if (!empty($pricingResults)): ?>
+                    <?php foreach ($pricingResults as $plan): ?>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="pricing-card">
+                                <div class="pricing-money">
+                                    <h3><?= htmlspecialchars($plan->name) ?></h3>
+                                    <h4><?= htmlspecialchars($plan->price) ?></h4>
+                                    <p>per project</p>
+                                </div>
+                                <ul class="pricing-list">
+                                    <?php
+                                    $features = json_decode($plan->content, true);
+                                    if (is_array($features)):
+                                        foreach ($features as $feature):
+                                    ?>
+                                            <li><?= htmlspecialchars($feature) ?></li>
+                                    <?php
+                                        endforeach;
+                                    endif;
+                                    ?>
+                                </ul>
+                                <div class="pricing-btn">
+                                    <a class="btn btn-inline" href="#">
+                                        <i class="fas fa-paper-plane"></i>
+                                        <span>Purchase plan</span>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <ul class="pricing-list">
-                            <li>One landing page</li>
-                            <li>With responsive</li>
-                            <li>modern design</li>
-                            <li>Three rivision</li>
-                            <li>four section</li>
-                        </ul>
-                        <div class="pricing-btn">
-                            <a class="btn btn-inline" href="#">
-                                <i class="fas fa-paper-plane"></i>
-                                <span>Purchase plan</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="pricing-card pricing-recom">
-                        <div class="pricing-money">
-                            <h3>standard</h3>
-                            <h4>$60.00</h4>
-                            <p>per project</p>
-                        </div>
-                        <ul class="pricing-list">
-                            <li>One landing page</li>
-                            <li>With responsive</li>
-                            <li>modern design</li>
-                            <li>five rivision</li>
-                            <li>six section</li>
-                        </ul>
-                        <div class="pricing-btn">
-                            <a class="btn btn-inline" href="#">
-                                <i class="fas fa-paper-plane"></i>
-                                <span>Purchase plan</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="pricing-card">
-                        <div class="pricing-money">
-                            <h3>premium</h3>
-                            <h4>$99.00</h4>
-                            <p>per project</p>
-                        </div>
-                        <ul class="pricing-list">
-                            <li>One landing page</li>
-                            <li>With responsive</li>
-                            <li>modern design</li>
-                            <li>eight rivision</li>
-                            <li>nine section</li>
-                        </ul>
-                        <div class="pricing-btn">
-                            <a class="btn btn-inline" href="#">
-                                <i class="fas fa-paper-plane"></i>
-                                <span>Purchase plan</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>
@@ -1319,7 +1244,7 @@ $educationResults = $education->getAllEducations();
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="name" placeholder="Name">
                                     <?php if (isset($_GET['name_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['name_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['name_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -1327,7 +1252,7 @@ $educationResults = $education->getAllEducations();
                                 <div class="form-group">
                                     <input type="email" class="form-control" name="email" placeholder="Email">
                                     <?php if (isset($_GET['email_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['email_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['email_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -1335,7 +1260,7 @@ $educationResults = $education->getAllEducations();
                                 <div class="form-group">
                                     <input type="text" class="form-control" name="subject" placeholder="Subject">
                                     <?php if (isset($_GET['subject_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['subject_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['subject_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -1343,7 +1268,7 @@ $educationResults = $education->getAllEducations();
                                 <div class="form-group">
                                     <textarea class="form-control" placeholder="Message" name="message"></textarea>
                                     <?php if (isset($_GET['message_error'])): ?>
-                                    <p class="text-danger"><?= $_GET['message_error']; ?></p>
+                                        <p class="text-danger"><?= $_GET['message_error']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -1354,7 +1279,7 @@ $educationResults = $education->getAllEducations();
                                         <span>send message</span>
                                     </button>
                                     <?php if (isset($_GET['success'])): ?>
-                                    <p class="text-success"><?= $_GET['success']; ?></p>
+                                        <p class="text-success"><?= $_GET['success']; ?></p>
                                     <?php endif; ?>
                                 </div>
                             </div>

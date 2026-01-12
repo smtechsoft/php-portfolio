@@ -3,8 +3,9 @@
 use App\Features\Admin\AdminBlog;
 
 $blog = new AdminBlog();
+$limit = 2;
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$allBlogs = $blog->getAllBlogs(2, $page);
+$allBlogs = $blog->getAllBlogs($limit, $page);
 $blogs = $allBlogs['rows'];
 $totalPage = $allBlogs['totalPages'];
 $currentPage = $allBlogs['currentPage'];
@@ -38,9 +39,9 @@ $currentPage = $allBlogs['currentPage'];
         </thead>
         <tbody>
             <?php if (!empty($blogs)): ?>
-            <?php foreach ($blogs as $blog): ?>
+            <?php foreach ($blogs as $key => $blog): ?>
             <tr>
-                <th scope="row">1</th>
+                <th scope="row"><?= ($currentPage - 1) * $limit + $key + 1 ?></th>
                 <td>
                     <img src="<?= $blog->thumbnail ?>" alt="">
                 </td>

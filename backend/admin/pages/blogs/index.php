@@ -38,22 +38,22 @@ $currentPage = $allBlogs['currentPage'];
         </thead>
         <tbody>
             <?php if (!empty($blogs)): ?>
-                <?php foreach ($blogs as $blog): ?>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>
-                            <img src="<?= $blog->thumbnail ?>" alt="">
-                        </td>
-                        <td><?= $blog->title ?></td>
-                        <td>
-                            <a href="/admin/blogs/edit/<?= $blog->slug ?>">edit</a>
-                            <button type="button" class="btn btn-primary deleteBtn" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal" data-blog-id="<?= $blog->id ?>">
-                                delete
-                            </button>
-                        </td>
-                    </tr>
-                <?php endforeach ?>
+            <?php foreach ($blogs as $blog): ?>
+            <tr>
+                <th scope="row">1</th>
+                <td>
+                    <img src="<?= $blog->thumbnail ?>" alt="">
+                </td>
+                <td><?= $blog->title ?></td>
+                <td>
+                    <a href="/admin/blogs/edit/<?= $blog->slug ?>">edit</a>
+                    <button type="button" class="btn btn-primary deleteBtn" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" data-blog-id="<?= $blog->id ?>">
+                        delete
+                    </button>
+                </td>
+            </tr>
+            <?php endforeach ?>
             <?php endif ?>
         </tbody>
     </table>
@@ -61,20 +61,22 @@ $currentPage = $allBlogs['currentPage'];
     <!-- Pgination -->
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="<?php echo '/admin/blogs?page=' . ($currentPage - 1) ?>">
+            <li class="page-item <?php if ($currentPage <= 1) echo 'disabled'; ?>">
+                <a class="page-link"
+                    href="<?php echo ($currentPage <= 1) ? '#' : '/admin/blogs?page=' . ($currentPage - 1); ?>">
                     < </a>
             </li>
             <?php for ($i = 1; $i <= $totalPage; $i++): ?>
-                <li class="page-item">
-                    <a class="page-link <?php if ($i == $currentPage) echo 'active'; ?>"
-                        href="<?php if ($i !== $currentPage) echo '/admin/blogs?page=' . $i ?>">
-                        <?= $i ?>
-                    </a>
-                </li>
+            <li class="page-item">
+                <a class="page-link <?php if ($i == $currentPage) echo 'active'; ?>"
+                    href="<?php if ($i !== $currentPage) echo '/admin/blogs?page=' . $i ?>">
+                    <?= $i ?>
+                </a>
+            </li>
             <?php endfor; ?>
-            <li class=" page-item">
-                <a class="page-link" href="<?php echo '/admin/blogs?page=' . ($currentPage + 1) ?>">
+            <li class=" page-item <?php if ($currentPage >= $totalPage) echo 'disabled'; ?>">
+                <a class="page-link"
+                    href="<?php echo ($currentPage >= $totalPage) ? '#' : '/admin/blogs?page=' . ($currentPage + 1); ?>">
                     >
                 </a>
             </li>
@@ -122,16 +124,17 @@ $currentPage = $allBlogs['currentPage'];
 
 
     <script>
-        let blogid = null;
-        let deleteBtn = $('.deleteBtn')
-        let deleteform = $('#blogDeleteConfirm')
-        let deleteBlogIdInput = $('#deleteBlogId')
+    let blogid = null;
+    let deleteBtn = $('.deleteBtn')
+    let deleteform = $('#blogDeleteConfirm')
+    let deleteBlogIdInput = $('#deleteBlogId')
 
-        deleteBtn.on('click', function() {
-            blogid = $(this).data('blog-id')
-            deleteBlogIdInput.val(blogid)
-        })
+    deleteBtn.on('click', function() {
+        blogid = $(this).data('blog-id')
+        deleteBlogIdInput.val(blogid)
+    })
     </script>
+    <?php include('backend/admin/partials/toastr.php'); ?>
 </body>
 
 </html>

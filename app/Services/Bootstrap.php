@@ -168,12 +168,16 @@ class Bootstrap
         // Check if admin user exists
         $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute(['admin@mail.com']);
-        
+
         if ($stmt->rowCount() === 0) {
             // Create default user
             $password = password_hash('12345678', PASSWORD_DEFAULT);
-            $insert = $pdo->prepare("INSERT INTO users (name, email, phone, password) VALUES (?, ?, ?, ?)");
-            $insert->execute(['Admin', 'admin@mail.com', '0000000000', $password]);
+
+            $slugService = new SlugService();
+            $slug = $slugService->generate('users', 'Admin');
+
+            $insert = $pdo->prepare("INSERT INTO users (name, email, phone, password, slug) VALUES (?, ?, ?, ?, ?)");
+            $insert->execute(['Admin', 'admin@mail.com', '0000000000', $password, $slug]);
         }
     }
 

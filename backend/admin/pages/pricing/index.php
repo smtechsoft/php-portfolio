@@ -33,10 +33,10 @@ $currentPage = $allPlans['currentPage'];
         </div>
 
         <?php if (isset($_GET['success'])): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($_GET['success']) ?></div>
+        <div class="alert alert-success"><?= $_GET['success'] ?></div>
         <?php endif; ?>
         <?php if (isset($_GET['error'])): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($_GET['error']) ?></div>
+        <div class="alert alert-danger"><?= $_GET['error'] ?></div>
         <?php endif; ?>
 
         <table class="table table-striped">
@@ -50,24 +50,24 @@ $currentPage = $allPlans['currentPage'];
             </thead>
             <tbody>
                 <?php if (!empty($plans)): ?>
-                    <?php foreach ($plans as $plan): ?>
-                        <tr>
-                            <th scope="row"><?= $plan->id ?></th>
-                            <td><?= htmlspecialchars($plan->name) ?></td>
-                            <td><?= htmlspecialchars($plan->price) ?></td>
-                            <td>
-                                <a href="/admin/pricing/edit/<?= $plan->slug ?>" class="btn btn-sm btn-warning">Edit</a>
-                                <button type="button" class="btn btn-sm btn-danger deleteBtn" data-bs-toggle="modal"
-                                    data-bs-target="#deleteModal" data-id="<?= $plan->id ?>">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
+                <?php foreach ($plans as $plan): ?>
+                <tr>
+                    <th scope="row"><?= $plan->id ?></th>
+                    <td><?= htmlspecialchars($plan->name) ?></td>
+                    <td><?= htmlspecialchars($plan->price) ?></td>
+                    <td>
+                        <a href="/admin/pricing/edit/<?= $plan->slug ?>" class="btn btn-sm btn-warning">Edit</a>
+                        <button type="button" class="btn btn-sm btn-danger deleteBtn" data-bs-toggle="modal"
+                            data-bs-target="#deleteModal" data-id="<?= $plan->id ?>">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                <?php endforeach ?>
                 <?php else: ?>
-                    <tr>
-                        <td colspan="4" class="text-center">No pricing plans found.</td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="text-center">No pricing plans found.</td>
+                </tr>
                 <?php endif ?>
             </tbody>
         </table>
@@ -80,9 +80,9 @@ $currentPage = $allPlans['currentPage'];
                     <a class="page-link" href="/admin/pricing?page=<?= $currentPage - 1 ?>">Previous</a>
                 </li>
                 <?php for ($i = 1; $i <= $totalPage; $i++): ?>
-                    <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
-                        <a class="page-link" href="/admin/pricing?page=<?= $i ?>"><?= $i ?></a>
-                    </li>
+                <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+                    <a class="page-link" href="/admin/pricing?page=<?= $i ?>"><?= $i ?></a>
+                </li>
                 <?php endfor; ?>
                 <li class="page-item <?= $currentPage >= $totalPage ? 'disabled' : '' ?>">
                     <a class="page-link" href="/admin/pricing?page=<?= $currentPage + 1 ?>">Next</a>
@@ -117,9 +117,9 @@ $currentPage = $allPlans['currentPage'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $('.deleteBtn').on('click', function() {
-            $('#deleteId').val($(this).data('id'));
-        });
+    $('.deleteBtn').on('click', function() {
+        $('#deleteId').val($(this).data('id'));
+    });
     </script>
     <?php include('backend/admin/partials/toastr.php'); ?>
 </body>

@@ -117,7 +117,7 @@ You can create dynamic routes by using square brackets `[]` in directory names. 
 $slug = $_GET['slug'] ?? null;
 
 if ($slug) {
-    echo "Showing post: " . htmlspecialchars($slug);
+    echo "Showing post: " . $slug;
 } else {
     echo "Slug not found";
 }
@@ -298,7 +298,7 @@ $users = $result['rows'];
 <h3>All Users</h3>
 <ul>
     <?php foreach ($users as $user): ?>
-        <li><?= htmlspecialchars($user->name) ?></li>
+        <li><?= $user->name ?></li>
     <?php endforeach; ?>
 </ul>
 ```
@@ -314,8 +314,8 @@ $user = $result['row'];
 
 <h3>User Details</h3>
 <?php if ($user): ?>
-    <p>Name: <?= htmlspecialchars($user->name) ?></p>
-    <p>Email: <?= htmlspecialchars($user->email) ?></p>
+    <p>Name: <?= $user->name ?></p>
+    <p>Email: <?= $user->email ?></p>
 <?php else: ?>
     <p>User not found.</p>
 <?php endif; ?>
@@ -332,8 +332,8 @@ $post = $result['row'];
 
 <h3>Post Details</h3>
 <?php if ($post): ?>
-    <h1><?= htmlspecialchars($post->title) ?></h1>
-    <p><?= htmlspecialchars($post->content) ?></p>
+    <h1><?= $post->title ?></h1>
+    <p><?= $post->content ?></p>
 <?php else: ?>
     <p>Post not found.</p>
 <?php endif; ?>
@@ -351,13 +351,56 @@ $latestUser = $result['row'];
 <h3>Newest Member</h3>
 <?php if ($latestUser): ?>
     <div class="user-card">
-        <h4><?= htmlspecialchars($latestUser->name) ?></h4>
-        <p>Joined: <?= htmlspecialchars($latestUser->created_at ?? 'Just now') ?></p>
+        <h4><?= $latestUser->name ?></h4>
+        <p>Joined: <?= $latestUser->created_at ?? 'Just now' ?></p>
     </div>
 <?php endif; ?>
 ```
 
-#### 5. Insert Data (`insert`)
+#### 5. Join Tables (`join`)
+
+```php
+<?php
+$db = new App\Services\DbQuery();
+
+// Fetch users with their posts
+$result = $db->join(
+    'users',                        // Main table
+    'users.name, posts.title',      // Columns
+    [                               // Joins
+        ['posts', 'users.id = posts.user_id']
+    ],
+    'users.active = 1',             // Where
+    'users.created_at DESC',        // Order
+    10                              // Limit
+);
+
+$rows = $result['rows'];
+?>
+
+<h3>Active Users & Posts</h3>
+<ul>
+    <?php foreach ($rows as $row): ?>
+        <li><?= $row->name ?> - <?= $row->title ?></li>
+    <?php endforeach; ?>
+</ul>
+```
+
+**Select All Columns (`*`)**
+
+```php
+// Select all columns from both tables
+$result = $db->join('users', '*', [
+    ['posts', 'users.id = posts.user_id']
+]);
+
+// Select all columns from a specific table
+$result = $db->join('users', 'users.*, posts.title', [
+    ['posts', 'users.id = posts.user_id']
+]);
+```
+
+#### 6. Insert Data (`insert`)
 
 ```php
 <?php
@@ -383,7 +426,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 ```
 
-#### 6. Update Data (`update`)
+#### 7. Update Data (`update`)
 
 ```php
 <?php
@@ -408,13 +451,13 @@ $user = $db->find('users', $id)['row'];
 
 <?php if ($user): ?>
     <form method="POST">
-        <input type="text" name="name" value="<?= htmlspecialchars($user->name) ?>" required>
+        <input type="text" name="name" value="<?= $user->name ?>" required>
         <button type="submit">Update Name</button>
     </form>
 <?php endif; ?>
 ```
 
-#### 7. Delete Data (`delete`)
+#### 8. Delete Data (`delete`)
 
 ```php
 <?php
@@ -436,7 +479,7 @@ $users = $db->all('users')['rows'];
 <ul>
     <?php foreach ($users as $user): ?>
         <li>
-            <?= htmlspecialchars($user->name) ?>
+            <?= $user->name ?>
             <form method="POST" style="display:inline;">
                 <input type="hidden" name="delete_id" value="<?= $user->id ?>">
                 <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>

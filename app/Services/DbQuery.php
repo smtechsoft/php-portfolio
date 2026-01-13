@@ -163,33 +163,6 @@ class DbQuery extends Database
         return $this->result;
     }
 
-
-    /**
-     * Find a single row by Slug.
-     *
-     * @param string $tableName The table name.
-     * @param string $slug The row slug.
-     * @return array Returns:
-     *               - rowCount (int)
-     *               - query (\PDOStatement)
-     *               - row (array|false)
-     */
-    public function where($tableName, $column, $value)
-    {
-        $this->query = "SELECT * FROM `$tableName` WHERE `$column` = ?";
-        $stmt = $this->returnConnect()->prepare($this->query);
-        $stmt->execute([$value]);
-
-        $this->runQuery = $stmt;
-        $this->rowsCount = $stmt->rowCount();
-
-        $this->result['rowCount'] = $this->rowsCount;
-        $this->result['query'] = $this->runQuery;
-        $this->result['row'] = $stmt->fetch(\PDO::FETCH_OBJ);
-
-        return $this->result;
-    }
-
     /**
      * Fetch the latest row from a table.
      *
@@ -295,4 +268,107 @@ class DbQuery extends Database
 
         return $success ? "data updated" : "update failed";
     }
+    
+    /**
+     * Fetch rows based on a dynamic column and value.
+     *
+     * @param string $tableName The table name.
+     * @param string $column The column name.
+     * @param mixed $value The value to search for.
+     * @return array Returns:
+     *               - rowCount (int)
+     *               - query (\PDOStatement)
+     *               - rows (array)
+     */
+    public function where($tableName, $column, $value)
+    {
+        $this->query = "SELECT * FROM `$tableName` WHERE `$column` = ?";
+        $stmt = $this->returnConnect()->prepare($this->query);
+        $stmt->execute([$value]);
+
+        $this->runQuery = $stmt;
+        $this->rowsCount = $stmt->rowCount();
+
+        $this->result['rowCount'] = $this->rowsCount;
+        $this->result['query'] = $this->runQuery;
+        $this->result['rows'] = $stmt->fetchAll(\PDO::FETCH_OBJ);
+
+        return $this->result;
+    }
+
+    /**
+     * Fetch rows with dynamic joins.
+     *
+     * @param string $tableName The main table name.
+     * @param string|array $columns Columns to select (e.g., "users.id, posts.title" or ["users.id", "posts.title"]).
+     * @param array $joins Array of join definitions.
+     *                     Each join can be:
+     *                     - ['table' => 'other', 'on' => 't1.id = t2.id', 'type' => 'LEFT']
+     *                     - ['other', 't1.id = t2.id', 'LEFT']
+     * @param string|null $where Optional WHERE clause (e.g., "users.status = 1").
+     * @param string|null $orderBy Optional ORDER BY clause (e.g., "users.created_at DESC").
+     * @param int|null $limit Optional LIMIT.
+     * @return array Returns standard result structure.
+     */
+    public function join($tableName, $columns, array $joins, $where = null, $orderBy = null, $limit = null)
+    {
+        // 1. Build SELECT columns
+        if (is_array($columns)) {
+            $columns = implode(', ', $columns);
+        }
+        
+        $sql = "SELECT $columns FROM `$tableName`";
+
+        // 2. Build JOINs
+        foreach ($joins as $join) {
+            // Normalize join array
+            if (isset($join['table'])) {
+                $joinTable = $join['table'];
+                $joinOn = $join['on'];
+                $joinType = $join['type'] ?? 'INNER';
+            } else {
+                // Handle simplified array: [0 => table, 1 => on, 2 => type]
+                $joinTable = $join[0];
+                $joinOn = $join[1];
+                $joinType = $join[2] ?? 'INNER';
+            }
+
+            // Validate join type
+            $joinType = strtoupper($joinType);
+            if (!in_array($joinType, ['INNER', 'LEFT', 'RIGHT', 'FULL', 'CROSS'])) {
+                $joinType = 'INNER';
+            }
+
+            $sql .= " $joinType JOIN `$joinTable` ON $joinOn";
+        }
+
+        // 3. Build WHERE
+        if ($where) {
+            $sql .= " WHERE $where";
+        }
+
+        // 4. Build ORDER BY
+        if ($orderBy) {
+            $sql .= " ORDER BY $orderBy";
+        }
+
+        // 5. Build LIMIT
+        if ($limit) {
+            $sql .= " LIMIT $limit";
+        }
+
+        $this->query = $sql;
+        $stmt = $this->returnConnect()->prepare($this->query);
+        $stmt->execute();
+
+        $this->runQuery = $stmt;
+        $this->rowsCount = $stmt->rowCount();
+
+        $this->result['rowCount'] = $this->rowsCount;
+        $this->result['query'] = $this->runQuery;
+        $this->result['rows'] = $stmt->fetchAll(\PDO::FETCH_OBJ);
+
+        return $this->result;
+    }
+
 }

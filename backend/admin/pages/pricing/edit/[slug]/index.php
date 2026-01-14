@@ -5,15 +5,20 @@ use App\Features\Admin\AdminPricing;
 $slug = $_GET['slug'] ?? ''; 
 
 $pricing = new AdminPricing();
-$plan = $pricing->getPricingPlanBySlug($slug);
+$result = $pricing->getPricingPlanWithContents($slug);
 
-if (!$plan) {
+if (empty($result['rows'])) {
     die('Pricing plan not found');
 }
 
-$features = json_decode($plan->content, true);
-if (!is_array($features)) {
-    $features = [];
+$rows = $result['rows'];
+$plan = $rows[0];
+$features = [];
+
+foreach ($rows as $row) {
+    if (!empty($row->feature)) {
+        $features[] = $row->feature;
+    }
 }
 ?>
 

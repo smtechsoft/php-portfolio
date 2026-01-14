@@ -18,4 +18,18 @@ class AdminPricing
         $pricing = $db->findBySlug('pricing_plans', $slug);
         return $pricing['row'] ?? null;
     }
+
+    public function getPricingPlanWithContents($slug)
+    {
+        $db = new DbQuery();
+        $where = "pricing_plans.slug = '$slug'";
+        return $db->join(
+            'pricing_plans',
+            'pricing_plans.*, pricing_plan_contents.content as feature',
+            [
+                ['pricing_plan_contents', 'pricing_plans.id = pricing_plan_contents.pricing_plan_id', 'LEFT']
+            ],
+            $where
+        );
+    }
 }

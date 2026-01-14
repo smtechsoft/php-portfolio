@@ -143,8 +143,8 @@ class Bootstrap
             try {
                 $pdo->exec($query);
             } catch (\PDOException $e) {
-                // Ignore "Multiple primary key defined" (1068), "Duplicate key name" (1061), "Duplicate column name" (1060)
-                if (in_array($e->errorInfo[1], [1068, 1061, 1060])) {
+                // Ignore "Multiple primary key defined" (1068), "Duplicate key name" (1061), "Duplicate column name" (1060), "Duplicate entry" (1062), "Duplicate foreign key constraint" (1826)
+                if (in_array($e->errorInfo[1], [1068, 1061, 1060, 1062, 1826])) {
                     continue;
                 }
                 throw $e;

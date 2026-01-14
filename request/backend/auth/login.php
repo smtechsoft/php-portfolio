@@ -12,7 +12,7 @@ if ($users['rowCount'] == 0) {
     header("Location: /admin/auth/login?emailError=Wrong email address");
     exit;
 } else {
-    $passwordHashed = password_verify($password, $users['row']->password);
+    $passwordHashed = password_verify($password, $users['rows'][0]->password);
     if ($passwordHashed) {
         $auth->attempt([
             'email' => $email,
@@ -23,7 +23,3 @@ if ($users['rowCount'] == 0) {
         header("Location: /admin/auth/login?passwordError=Wrong password");
     }
 }
-
-
-// print_r($users);
-// print_r($users['row']->password);

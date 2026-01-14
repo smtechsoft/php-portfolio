@@ -23,11 +23,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         [
             'name' => $name,
             'price' => $price,
-            'content' => json_encode($content),
         ]
     );
 
-    if ($result) {
+    if ($result === 'data updated') {
+        $planId = $getItem['row']->id;
+
+        // Delete existing contents
+        $existingContents = $db->where('pricing_plan_contents', 'pricing_plan_id', $planId);
+        if ($existingContents['rowCount'] > 0) {
+            foreach ($existingContents['rows'] as $row) {
+                $db->delete('pricing_plan_contents', $row->id);
+            }
+        }
+
+        // Insert new contents
+        if (is_array($content)) {
+            foreach ($content as $feature) {
+                if (!empty($feature)) {
+                    $db->insert('pricing_plan_contents', [
+                        'pricing_plan_id' => $planId,
+                        'content' => $feature,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ]);
+                }
+            }
+        }
+
         header('Location: /admin/pricing?success=Pricing plan updated successfully');
         exit;
     } else {

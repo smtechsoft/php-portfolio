@@ -817,7 +817,7 @@ $pricingResults = $pricing->getAllPricingPlans();
                         <h2>Pricing plan will be change by discussion</h2>
                     </div>
                 </div>
-            </div>
+        </div>
             <div class="row">
                 <?php if (!empty($pricingResults)): ?>
                 <?php foreach ($pricingResults as $plan): ?>
@@ -830,9 +830,8 @@ $pricingResults = $pricing->getAllPricingPlans();
                         </div>
                         <ul class="pricing-list">
                             <?php
-                                    $features = json_decode($plan->content, true);
-                                    if (is_array($features)):
-                                        foreach ($features as $feature):
+                                    if (!empty($plan->features)):
+                                        foreach ($plan->features as $feature):
                                     ?>
                             <li><?= $feature ?></li>
                             <?php
@@ -851,7 +850,6 @@ $pricingResults = $pricing->getAllPricingPlans();
                 <?php endforeach; ?>
                 <?php endif; ?>
             </div>
-        </div>
     </section>
     <!--=====================================
                     PRICING PART END

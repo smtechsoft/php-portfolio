@@ -10,7 +10,7 @@
 
 <body>
     <?php include('backend/admin/partials/header.php'); ?>
-    
+
     <div class="container mt-4">
         <h2>Create Pricing Plan</h2>
         <form action="/request/backend/pricing/create" method="post">
@@ -40,24 +40,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#add-feature').click(function() {
-                $('#features-container').append(`
+    $(document).ready(function() {
+        $('#add-feature').click(function() {
+            $('#features-container').append(`
                     <div class="input-group mb-2">
                         <input type="text" class="form-control" name="content[]" placeholder="Feature" required>
                         <button type="button" class="btn btn-danger remove-feature">X</button>
                     </div>
                 `);
-            });
-
-            $(document).on('click', '.remove-feature', function() {
-                if ($('.input-group').length > 1) {
-                    $(this).closest('.input-group').remove();
-                } else {
-                    alert('At least one feature is required.');
-                }
-            });
         });
+
+        $(document).on('click', '.remove-feature', function() {
+            if ($('.input-group').length > 1) {
+                $(this).closest('.input-group').remove();
+            } else {
+                alert('At least one feature is required.');
+            }
+        });
+    });
     </script>
     <?php include('backend/admin/partials/toastr.php'); ?>
 </body>

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = $_POST['content'];
     $slugService = new SlugService();
     $slug = $slugService->generate('pricing_plans', $name);
-    
+
     $db = new DbQuery();
     $result = $db->insert('pricing_plans', [
         'name' => $name,
@@ -20,10 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result === 'data inserted') {
         // Get the newly created plan ID
         $newPlan = $db->findBySlug('pricing_plans', $slug);
-        
+
         if ($newPlan['row']) {
             $planId = $newPlan['row']->id;
-            
+
             // Insert contents
             if (is_array($content)) {
                 foreach ($content as $feature) {
